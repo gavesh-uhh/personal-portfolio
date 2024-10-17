@@ -1,7 +1,6 @@
 export async function load() {
   return {
-    today: await scrapeWebsite("https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1&date=2024-10-16")
-    //upcoming: scrapeWebsite("https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1" + generateUpcomingTimeStr())
+    today: await scrapeWebsite("https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1")
   }
 }
 
