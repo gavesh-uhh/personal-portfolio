@@ -3,6 +3,8 @@
 Personal Website made with SvelteKit, TailwindCSS and Typescript.
 Not the best code written by miraculous hands but hope you learn something.
 
+[Click Here to Visit](https://gavesh.live)
+
 ### Current Preview
 ![image](https://github.com/user-attachments/assets/fdbfc3f1-262f-48af-98fd-be8d2b90d8a8)
 
