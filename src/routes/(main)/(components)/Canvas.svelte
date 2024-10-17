@@ -48,6 +48,7 @@
 
 <style>
 	#object {
+		display: hidden;
 		transition: all;
 		position: absolute;
 		width: 100px;
@@ -60,4 +61,3 @@
 		background-color: seagreen;
 	}
 </style>
-
