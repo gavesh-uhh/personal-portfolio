@@ -1,5 +1,8 @@
 <script lang="ts">
-	import '../../app.css';
+
+// Vercel
+import { inject } from '@vercel/analytics'
+  import '../../app.css';
 	import Canvas from './(components)/Canvas.svelte';
 	import Header from './(components)/Header.svelte';
 	import Navigation from './(components)/Navigation.svelte';
