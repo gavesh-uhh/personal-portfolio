@@ -17,6 +17,14 @@
 
 <svelte:head>
 	<title>NIBM Lecture Explorer</title>
+	<meta name="title" content="NIBM Lecturer Explorer" />
+	<meta name="description" content="Sort through today's lectures" />
+	<meta name="keywords" content="nibm" />
+	<meta name="robots" content="index, follow" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="English" />
+	<meta name="revisit-after" content="4 days" />
+	<meta name="author" content="Gavesh Saparamadu" />
 </svelte:head>
 
 <div class="h-full flex-1 flex flex-col">

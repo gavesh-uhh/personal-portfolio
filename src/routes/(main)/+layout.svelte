@@ -1,8 +1,7 @@
 <script lang="ts">
-
-// Vercel
-import { inject } from '@vercel/analytics'
-  import '../../app.css';
+	// Vercel
+	import { inject } from '@vercel/analytics';
+	import '../../app.css';
 	import Canvas from './(components)/Canvas.svelte';
 	import Header from './(components)/Header.svelte';
 	import Navigation from './(components)/Navigation.svelte';
@@ -15,6 +14,14 @@ import { inject } from '@vercel/analytics'
 
 <svelte:head>
 	<title>Gavesh Saparamadu</title>
+	<meta name="title" content="Gavesh Saparamadu" />
+	<meta name="description" content="My Personal Website" />
+	<meta name="keywords" content="portfolio" />
+	<meta name="robots" content="index, follow" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="English" />
+	<meta name="revisit-after" content="4 days" />
+	<meta name="author" content="Gavesh Saparamadu" />
 </svelte:head>
 
 <div class="py-12 px-8 sm:p-16 min-h-screen flex flex-col justify-between">
