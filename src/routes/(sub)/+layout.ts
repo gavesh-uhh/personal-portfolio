@@ -3,10 +3,3 @@ import { inject } from '@vercel/analytics';
 
 inject({ mode: dev ? 'development' : 'production' });
 
-export const load = ({ url }: any) => {
-  const { pathname } = url;
-  return {
-    pathname
-  };
-};
-
