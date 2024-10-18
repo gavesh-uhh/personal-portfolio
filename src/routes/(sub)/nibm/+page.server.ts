@@ -13,9 +13,8 @@ async function scrapeWebsite(url: string) {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
-    // @ts-ignore
-    $('div.swiper-slide > table > tbody > tr').each((index, row) => {
-      const firstTD = $(row).find('td').first();
+    // Gather all promises for isOngoing calls
+    const lecturePromises = $('div.swiper-slide > table > tbody > tr').map(async (index, row) => {
       let lecture: Lecture = { class: null, branch: null, floor: null, lecturer: null, time: null, on_going: false };
       $(row).find('td').each((tdIndex, td) => {
         const text = $(td).text().trim();
@@ -30,39 +29,41 @@ async function scrapeWebsite(url: string) {
         if (tdIndex === 2) {
           lecture.class = $(td).contents().last().text();
           $(td).find("big").each((i, big) => {
-            if (i == 0) {
+            if (i === 0) {
               lecture.time = $(big).text();
-              lecture.on_going = (isOngoing(lecture.time));
             }
-            if (i == 1) lecture.lecturer = $(big).text();
+            if (i === 1) {
+              lecture.lecturer = $(big).text();
+            }
           });
         }
       });
-      lectures.push(lecture);
-    });
+
+      lecture.on_going = await isOngoing(lecture.time ?? "");
+      return lecture;
+    }).get();
+    lectures = await Promise.all(lecturePromises);
   } catch (error) {
     console.error('Oopsie daisy', error);
   }
-  generateUpcomingTimeStr();
   return lectures;
 }
 
 
-function isOngoing(time_str: string) {
+async function isOngoing(time_str: string) {
+  if (time_str == "") return false;
   let time_data = time_str.split("-");
   let start_time = convertToDateObj(time_data[0]);
   let end_time = convertToDateObj(time_data[1]);
-  let current_time = new Date().getTime();
+  let date = await getRealTime();
+  let current_time = date.getTime();
   return current_time >= start_time.getTime() && current_time <= end_time.getTime();
 }
 
-function generateUpcomingTimeStr() {
-  const today = new Date();
-  today.setDate(today.getDate() + 1);
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  return `&date=${year}/${month}/${day}`;
+async function getRealTime() {
+  let data = await fetch("https://timeapi.io/api/time/current/zone?timeZone=Asia%2FColombo");
+  let resp = await data.json();
+  return new Date(resp.dateTime);
 }
 
 function convertToDateObj(time: string) {
