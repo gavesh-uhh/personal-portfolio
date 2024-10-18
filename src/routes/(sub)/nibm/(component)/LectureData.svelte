@@ -10,7 +10,10 @@
 	};
 </script>
 
-<div class="p-4 bg-background-secondary ring-1 ring-stone-800 rounded-lg">
+<div class="relative p-4 bg-background-secondary ring-1 ring-stone-800 rounded-lg">
+	{#if data.on_going}
+		<div class="grad"></div>
+	{/if}
 	<h1 class="text-muted text-xs">{data.branch}</h1>
 	<div class="flex flex-row justify-between items-center">
 		<h1 class="text-md sm:text-xl">{data.class}</h1>
@@ -27,3 +30,17 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.grad {
+		@apply rounded-lg;
+		position: absolute;
+		left: 0;
+		opacity: 25%;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		background: rgb(37, 162, 29);
+		background: linear-gradient(0deg, rgba(37, 162, 29, 1) 5%, rgba(255, 255, 255, 0) 100%);
+	}
+</style>

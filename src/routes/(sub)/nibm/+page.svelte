@@ -13,6 +13,11 @@
 	const updateTable = async () => {
 		selectedBranch = inputBranch;
 	};
+
+	const manual = (batch: string) => {
+		inputBranch = batch;
+		selectedBranch = batch;
+	};
 </script>
 
 <svelte:head>
@@ -36,12 +41,24 @@
 		<input
 			bind:value={inputBranch}
 			on:input={updateTable}
-			placeholder="Type Your Branch Here"
+			placeholder="Type Your Batch Here.."
 			class="search-bar"
 			type="text"
 		/>
 	</div>
-	<div class="mt-4 flex flex-col flex-1 gap-2">
+	<div class="flex opacity-50 hover:opacity-100 transition duration-300 my-4 gap-2 flex-wrap">
+		<h1>Tags</h1>
+		<div>
+			<button
+				class="quick-batch"
+				on:click={() => {
+					manual('DSE24.2F');
+				}}>DSE24.2F</button
+			>
+		</div>
+	</div>
+
+	<div class="mt-2 flex flex-col flex-1 gap-2">
 		{#if data.today.length > 0}
 			{#each data.today as item}
 				{#if selectedBranch === ''}
@@ -61,5 +78,8 @@
 <style>
 	.search-bar {
 		@apply bg-background-secondary text-foreground py-2 px-4 rounded-lg;
+	}
+	.quick-batch {
+		@apply bg-white rounded-lg text-black px-2;
 	}
 </style>
