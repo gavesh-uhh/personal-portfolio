@@ -18,7 +18,7 @@
 		await updateSpotify();
 		setInterval(async () => {
 			await updateSpotify();
-		}, 2500);
+		}, 1000);
 	});
 
 	async function updateProfilePicture() {
@@ -66,21 +66,22 @@
 
 <div class="flex flex-col gap-4">
 	<div class="flex flex-col sm:flex-row gap-5 sm:gap-12">
-		<div class="flex gap-6 items-center flex-row">
+		<div class="flex gap-5 items-center flex-row">
 			<img
-				loading="lazy"
-				class="size-[80px] rounded-lg info transition-all duration-300"
+				loading="eager"
+				class="size-[80px] rounded-lg transition-all duration-300"
 				src={GITHUB_PROFILE_URL}
 				alt="GitHub Avatar"
 			/>
 			<div class="select-none">
 				<h1 class="text-3xl">Gavesh</h1>
-				<h1 class="text-xl">Saparamadu</h1>
+				<h1 class="text-2xl">Saparamadu</h1>
 			</div>
 		</div>
 		<div class="flex gap-4 items-center flex-row">
 			<img
 				loading="lazy"
+				title={SPOTIFY_ALBUM}
 				class="size-[50px] rounded-md"
 				src={isOnline ? SPOTIFY_IMAGE : DefaultSong}
 				alt={isOnline ? SPOTIFY_ALBUM : 'Album Cover for Default Picture'}
@@ -88,7 +89,7 @@
 			<div>
 				{#if isOnline}
 					<h1 class="font-semibold text-sm sm:text-md">
-						<span class="text-xs text-muted-foreground">Listening to</span>
+						<span class="text-xs text-muted-foreground">Listening </span>
 						{SPOTIFY_TRACK}
 					</h1>
 					<h1 class="text-xs text-muted-foreground">by {SPOTIFY_ARTIST}</h1>

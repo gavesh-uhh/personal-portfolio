@@ -28,7 +28,7 @@
 	<div class="z-10">
 		<Header />
 		<Navigation />
-		<hr class="mb-4 mt-0 opacity-15" />
+		<hr class="mb-6 mt-0 opacity-15" />
 		{#key pathname}
 			<div
 				class="mt-2 sm:mt-0 flex-grow"

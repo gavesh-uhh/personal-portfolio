@@ -60,11 +60,16 @@
 		border-right: 2px solid var(--border);
 	}
 
+	a:hover {
+		@apply bg-border;
+	}
+
 	a[aria-current='page'] {
 		opacity: 100%;
 		@apply bg-background-secondary;
 		@apply text-foreground;
 		@apply font-semibold;
+		border-left: 2px solid #ffffff50;
+		border-right: 2px solid #ffffff50;
 	}
 </style>
-

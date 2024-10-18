@@ -22,8 +22,8 @@
 	}
 
 	function animate() {
-		currentX = lerp(currentX, mouseX - 50, 0.1);
-		currentY = lerp(currentY, mouseY - 50, 0.1);
+		currentX = lerp(currentX, mouseX - 75, 0.1);
+		currentY = lerp(currentY, mouseY - 75, 0.1);
 		if (!boxObject.style == null) return;
 		boxObject.style.left = `${currentX}px`;
 		boxObject.style.top = `${currentY}px`;
@@ -51,13 +51,13 @@
 		display: hidden;
 		transition: all;
 		position: absolute;
-		width: 100px;
-		height: 100px;
-		left: -30px;
-		top: -30px;
-		opacity: 50%;
+		width: 150px;
+		height: 150px;
+		left: -350px;
+		top: -350px;
+		opacity: 45%;
 		border-radius: 50%;
-		filter: blur(45px);
+		filter: blur(55px);
 		background-color: seagreen;
 	}
 </style>

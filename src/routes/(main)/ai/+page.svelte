@@ -37,9 +37,12 @@
 
 <div class="flex flex-col gap-4">
 	<div>
-		<div class="mt-2 gap-2 rounded-lg flex relative">
+		<div>
+			<h1 class="text-muted-foreground text-sm">AI Helper</h1>
+		</div>
+		<div class="mt-4 gap-2 rounded-lg flex relative">
 			<input
-				placeholder={responseLoading ? 'Fetching response...' : 'Message AI about Me'}
+				placeholder={responseLoading ? 'Fetching response...' : 'Ask AI about me'}
 				type="text"
 				bind:value={inputValue}
 				on:keydown={handleKeyDown}
@@ -65,10 +68,15 @@
 		<h1
 			class={`text-xs transition-all duration-300 ${error ? 'text-red-500' : 'text-muted-foreground'}`}
 		>
-			AI Response,
+			Generated Response,
 		</h1>
 		<p class="text-lg mt-2 transition-all duration-300 text-foreground">
 			{responseData}
+		</p>
+	</div>
+	<div>
+		<p class="text-xs text-muted-foreground">
+			Disclaimer - This feature might generate invalid information. Check important info
 		</p>
 	</div>
 </div>
