@@ -2,9 +2,11 @@
 	import { onMount } from 'svelte';
 	import DefaultSong from '$lib/assets/default-song.webp';
 
+	import DefaultProfile from '$lib/assets/default-profile.webp';
+
 	import { MapPin } from 'lucide-svelte';
 
-	let GITHUB_PROFILE_URL: string;
+	let GITHUB_PROFILE_URL: string = DefaultProfile;
 	let SPOTIFY_TRACK: string;
 	let SPOTIFY_ARTIST: string;
 	let SPOTIFY_ALBUM: string;
@@ -12,17 +14,21 @@
 	let isOnline: boolean = false;
 
 	onMount(async () => {
-		await updateGithub();
+		await updateProfilePicture();
 		await updateSpotify();
 		setInterval(async () => {
 			await updateSpotify();
 		}, 2500);
 	});
 
-	async function updateGithub() {
-		const response = await fetch('https://api.github.com/users/gavesh-uhh');
-		const data = await response.json();
-		GITHUB_PROFILE_URL = data.avatar_url;
+	async function updateProfilePicture() {
+		try {
+			const response = await fetch('https://api.github.com/users/gavesh-uhh');
+			const data = await response.json();
+			GITHUB_PROFILE_URL = data.avatar_url;
+		} catch (error) {
+			GITHUB_PROFILE_URL = DefaultProfile;
+		}
 	}
 
 	async function updateSpotify() {
