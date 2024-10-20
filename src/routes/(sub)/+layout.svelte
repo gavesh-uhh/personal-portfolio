@@ -1,5 +1,4 @@
 <script>
-	import { inject } from '@vercel/analytics';
 	import { ArrowLeft } from 'lucide-svelte';
 	import '../../app.css';
 </script>

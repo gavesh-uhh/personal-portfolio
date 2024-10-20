@@ -24,9 +24,10 @@
 	function animate() {
 		currentX = lerp(currentX, mouseX - 75, 0.1);
 		currentY = lerp(currentY, mouseY - 75, 0.1);
-		if (!boxObject.style == null) return;
-		boxObject.style.left = `${currentX}px`;
-		boxObject.style.top = `${currentY}px`;
+		if (boxObject && boxObject.style) {
+			boxObject.style.left = `${currentX}px`;
+			boxObject.style.top = `${currentY}px`;
+		}
 		requestAnimationFrame(animate);
 	}
 
@@ -48,8 +49,7 @@
 
 <style>
 	#object {
-		display: hidden;
-		transition: all;
+		transition: all 0.2s ease;
 		position: absolute;
 		width: 150px;
 		height: 150px;
@@ -61,3 +61,4 @@
 		background-color: seagreen;
 	}
 </style>
+

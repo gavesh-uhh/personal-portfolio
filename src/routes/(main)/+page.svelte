@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { Download, Coffee } from 'lucide-svelte';
+	import { Mail, Download, Coffee } from 'lucide-svelte';
+
+	const copyEmail = async () => {
+		navigator.clipboard.writeText('gaveshasaparamadu06@gmail.com');
+		alert('Email Copied to Clipboard');
+	};
 </script>
 
 <div class="flex flex-col gap-7">
@@ -20,6 +25,15 @@
 		<h1 class="text-muted-foreground text-sm">Contact & Info</h1>
 		<div class="flex flex-col">
 			<div class="py-2">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				<h1
+					class="flex flex-row items-center gap-2 cursor-pointer hover:underline"
+					on:click={copyEmail}
+				>
+					<Mail class="w-4 h-4" />
+					Mail (Click to Copy)
+				</h1>
 				<a
 					href="/"
 					class="underline-offset-0 hover:underline flex flex-row gap-2 w-fit h-fit items-center"

@@ -32,7 +32,6 @@ const getModel = async (prompt: string) => {
     systemInstruction: SYSTEM_DATA,
     generationConfig: {
       candidateCount: 1,
-      stopSequences: ["x"],
       temperature: 1.0,
     },
   });

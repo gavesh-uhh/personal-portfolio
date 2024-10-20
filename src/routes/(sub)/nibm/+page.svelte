@@ -1,14 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import LectureData from './(component)/LectureData.svelte';
 	export let data;
 
 	$: selectedBranch = '';
 	let inputBranch: string;
-
-	onMount(async () => {
-		console.log(data.today);
-	});
 
 	const updateTable = async () => {
 		selectedBranch = inputBranch;
@@ -63,7 +58,7 @@
 			{#each data.today as item}
 				{#if selectedBranch === ''}
 					<LectureData data={item} />
-				{:else if item.branch === selectedBranch}
+				{:else if item.branch?.startsWith(selectedBranch)}
 					<LectureData data={item} />
 				{/if}
 			{/each}

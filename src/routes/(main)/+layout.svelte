@@ -1,18 +1,25 @@
 <script lang="ts">
-	// Vercel
-	import { inject } from '@vercel/analytics';
 	import '../../app.css';
 	import Canvas from './(components)/Canvas.svelte';
 	import Header from './(components)/Header.svelte';
 	import Navigation from './(components)/Navigation.svelte';
 	import { fade } from 'svelte/transition';
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	export var data: PageData;
 	$: pathname = data.pathname;
 </script>
 
 <svelte:head>
+	<link
+		rel="preload"
+		href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+		as="style"
+	/>
+	<link rel="prefetch" href="https://avatars.githubusercontent.com/u/108465365?v=4" />
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+	/>
 	<title>Gavesh Saparamadu</title>
 	<meta name="title" content="Gavesh Saparamadu" />
 	<meta name="description" content="My Personal Website" />
