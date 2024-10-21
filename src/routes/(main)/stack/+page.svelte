@@ -6,11 +6,10 @@
 	<div>
 		<h1 class="text-muted-foreground text-sm">Specialization</h1>
 		<div class="mt-4 flex flex-wrap gap-2">
-			<Tech name={'Java 8+'} img={'Java'} />
-			<Tech name={'C Sharp'} img={'csharp'} />
+			<Tech name={'Java'} img={'java'} />
+			<Tech name={'C#'} img={'csharp'} />
 			<Tech name={'C++'} img={'cplusplus'} />
-			<Tech name={'C++'} img={'cplusplus'} />
-			<Tech name={'Type Script'} img={'typescript'} />
+			<Tech name={'TypeScript'} img={'typescript'} />
 			<Tech name={'Node JS'} img={'nodejs'} />
 		</div>
 	</div>
