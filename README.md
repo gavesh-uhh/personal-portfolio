@@ -6,7 +6,7 @@ Not the best code written by miraculous hands but hope you learn something.
 [Click Here to Visit](https://gavesh.live)
 
 ### Current Preview
-![image](https://github.com/user-attachments/assets/fdbfc3f1-262f-48af-98fd-be8d2b90d8a8)
+![image](https://github.com/user-attachments/assets/7ad07868-6327-4671-a0e9-15c05c44bb04)
 
 ### Environment Variable Setup
 LASTFM_API_KEY = `API Key for LastFM duh` <br>
