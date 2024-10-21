@@ -82,7 +82,7 @@
 		<h1 class="text-muted-foreground text-sm">Misc</h1>
 		<p class="mt-0">
 			Have more questions about me? Try
-			<a class="bg-yellow-600 px-4 py-1 ml-1 rounded-lg" href="/ai">My AI</a>
+			<a class="bg-yellow-600 px-4 py-1 rounded-lg whitespace-nowrap" href="/ai">MyAI</a>
 		</p>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 export async function load() {
   return {
-    today: await scrapeWebsite("https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1")
+    today: scrapeWebsite("https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1")
   }
 }
 

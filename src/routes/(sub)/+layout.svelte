@@ -9,7 +9,7 @@
 			<ArrowLeft class="w-4 h-4 mr-2" /> Back to Home</a
 		>
 		<div>
-			<h1 class="text-xs text-muted-foreground">Made by Gavesh Saparamadu ❤️</h1>
+			<h1 class="text-xs text-muted-foreground text-right">Made by Gavesh Saparamadu ❤️</h1>
 		</div>
 	</div>
 	<hr class="mt-2 mb-4 opacity-20" />
