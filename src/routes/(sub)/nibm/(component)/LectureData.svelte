@@ -7,6 +7,7 @@
 		lecturer: string | null;
 		time: string | null;
 		on_going: boolean;
+		date: Date;
 	};
 </script>
 
@@ -29,6 +30,9 @@
 			<span class="text-green-400">(On Going)</span>
 		{/if}
 	</div>
+	<div class="flex flex-wrap gap-2">
+		<h1 class="text-muted-foreground text-xs opacity-50">{data.date.toDateString()}</h1>
+	</div>
 </div>
 
 <style>
@@ -41,6 +45,6 @@
 		height: 100%;
 		top: 0;
 		background: rgb(37, 162, 29);
-		background: linear-gradient(0deg, rgba(37, 162, 29, 1) 5%, rgba(255, 255, 255, 0) 100%);
+		background: linear-gradient(0deg, rgba(37, 162, 29, 1) 0%, rgba(255, 255, 255, 0) 95%);
 	}
 </style>

@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { Loader2 } from 'lucide-svelte';
+	import { page } from '$app/stores';
 	import LectureData from './(component)/LectureData.svelte';
+	import { onMount } from 'svelte';
 	export let data;
 
 	$: selectedBranch = '';
+	$: offset = 0;
 	let inputBranch: string;
-
+	let currentDate = data.date;
 	const updateTable = async () => {
 		selectedBranch = inputBranch;
 	};
@@ -14,6 +17,34 @@
 		inputBranch = batch;
 		selectedBranch = batch;
 	};
+
+	const setOffset = (num: number) => {
+		offset = num;
+	};
+
+	onMount(() => {
+		const unsubscribe = page.subscribe(($page) => {
+			const url = new URL($page.url);
+			let classParam = url.searchParams.get('batch') || '';
+			let offsetParam = url.searchParams.get('offset') || 0;
+			if (classParam != '') {
+				manual(classParam);
+			}
+			if (offsetParam != null) offset = parseInt(offsetParam.toString());
+		});
+		return () => {
+			unsubscribe();
+		};
+	});
+
+	function checkForOffset(date1: Date | null, date2: Date | null, offset: number): boolean {
+		if (date1 == null || date2 == null) return false;
+		return (
+			date1.getFullYear() === date2.getFullYear() &&
+			date1.getMonth() === date2.getMonth() &&
+			date1.getDate() === date2.getDate() + offset
+		);
+	}
 </script>
 
 <svelte:head>
@@ -32,7 +63,7 @@
 	<div class="flex flex-col sm:flex-row items-start gap-4 sm:items-center justify-between">
 		<div>
 			<h1 class="text-3xl font-semibold">NIBM Lectures Viewer</h1>
-			<p class="text-muted-foreground">Type the full batch name (Example - DSE21.3F)</p>
+			<p class="text-muted-foreground text-sm">Type the full batch name (Example - DSE21.3F)</p>
 		</div>
 		<input
 			bind:value={inputBranch}
@@ -42,21 +73,46 @@
 			type="text"
 		/>
 	</div>
-	<div class="flex opacity-100 transition duration-300 my-6 gap-2 flex-wrap">
-		<h1>Tags</h1>
-		<div>
-			<button
-				class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
-				on:click={() => {
-					manual('DSE24.2F');
-				}}>DSE24.2F</button
-			>
-			<button
-				class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
-				on:click={() => {
-					manual('REPEATERS');
-				}}>Repeating Exams</button
-			>
+
+	<hr class="mt-3 mb-1 opacity-10" />
+
+	<div class="flex flex-col gap-4 my-4">
+		<div class="flex opacity-100 transition duration-300 gap-2 flex-wrap">
+			<h1>Days</h1>
+			<div class="flex flex-row gap-1">
+				{#each { length: 3 } as _, i}
+					<button
+						class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
+						on:click={() => {
+							setOffset(i);
+						}}
+					>
+						{#if i == 0}
+							Today
+						{:else}
+							+{i} Days
+						{/if}
+					</button>
+				{/each}
+			</div>
+		</div>
+
+		<div class="flex opacity-100 transition duration-300 gap-2 flex-wrap">
+			<h1>Tags</h1>
+			<div>
+				<button
+					class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
+					on:click={() => {
+						manual('DSE24.2F');
+					}}>DSE24.2F</button
+				>
+				<button
+					class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
+					on:click={() => {
+						manual('REPEATERS');
+					}}>Repeating Exams</button
+				>
+			</div>
 		</div>
 	</div>
 
@@ -69,10 +125,10 @@
 		{:then lectures}
 			{#if lectures.length > 0}
 				{#each lectures as item}
-					{#if selectedBranch === ''}
-						<LectureData data={item} />
-					{:else if item.branch?.startsWith(selectedBranch)}
-						<LectureData data={item} />
+					{#if checkForOffset(item.date, currentDate, offset)}
+						{#if selectedBranch === '' || item.branch?.startsWith(selectedBranch)}
+							<LectureData data={item} />
+						{/if}
 					{/if}
 				{/each}
 			{:else}
