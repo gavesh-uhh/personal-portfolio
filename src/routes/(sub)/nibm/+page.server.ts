@@ -74,12 +74,13 @@ function isOngoing(currentDate: Date, time_str: string) {
   return currentDate >= start_time && currentDate <= end_time;
 }
 async function getRealDate() {
-  const utcDate = new Date();
-  const offset = 5.5 * 60 * 60 * 1000; // offset in milliseconds
-  const sriLankaDate = new Date(utcDate.getTime() + offset);
+  const localDate = new Date();
+  const localOffset = localDate.getTimezoneOffset() * 60 * 1000; // in milliseconds
+  const utcDate = new Date(localDate.getTime() + localOffset);
+  const sriLankaOffset = 5.5 * 60 * 60 * 1000; // offset in milliseconds
+  const sriLankaDate = new Date(utcDate.getTime() + sriLankaOffset);
   return sriLankaDate;
 }
-
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
   if (!date1 || !date2) return false;
   return date1.getFullYear() === date2.getFullYear() &&
