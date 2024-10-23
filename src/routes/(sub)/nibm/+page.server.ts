@@ -73,7 +73,6 @@ function isOngoing(currentDate: Date, time_str: string) {
   const end_time = convertTimeToDate(time_data[1]);
   return currentDate >= start_time && currentDate <= end_time;
 }
-
 async function getRealDate() {
   try {
     const response = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo");
@@ -81,16 +80,16 @@ async function getRealDate() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    const utcDate = new Date(data.dateTime);
-    const localOffset = new Date().getTimezoneOffset();
-    const colomboOffset = -330;
-    const offsetDifference = localOffset - colomboOffset;
-    utcDate.setMinutes(utcDate.getMinutes() + offsetDifference);
-    console.log(utcDate);
-    return utcDate;
+    console.log("API Response:", data);
+    const localDate = new Date(data.dateTime); // Treat as local time directly
+    if (isNaN(localDate.getTime())) {
+      throw new Error("Invalid local date created from API response");
+    }
+    console.log("Local Date:", localDate.toString());
+    return localDate; // Return the valid local date
   } catch (error) {
     console.error("Error fetching the date:", error);
-    return new Date();
+    return new Date(); // Fallback to the current date
   }
 }
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
