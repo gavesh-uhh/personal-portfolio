@@ -1,6 +1,6 @@
 <script>
 	import { page } from '$app/stores';
-	import { Home, BookOpen, Link, Sparkles, FileStack } from 'lucide-svelte';
+	import { Home, BookOpen, Link, Sparkles, Microchip } from 'lucide-svelte';
 
 	$: currRoute = $page.url.pathname;
 </script>
@@ -27,7 +27,7 @@
 		href="/stack"
 		class="link flex items-center flex-row gap-2 rounded-xl p-3 text-muted-foreground w-fit"
 	>
-		<FileStack class="w-4 h-4" />
+		<Microchip class="w-4 h-4" />
 		Stack
 	</a>
 	<a

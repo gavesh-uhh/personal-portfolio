@@ -3,6 +3,7 @@
 	import Canvas from './(components)/Canvas.svelte';
 	import Header from './(components)/Header.svelte';
 	import Navigation from './(components)/Navigation.svelte';
+	import Curtain from './(components)/Curtain.svelte';
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	export var data: PageData;
@@ -32,6 +33,7 @@
 </svelte:head>
 
 <div class="py-12 px-8 sm:p-16 min-h-screen flex flex-col justify-between">
+	<Curtain />
 	<div class="z-10">
 		<Header />
 		<Navigation />

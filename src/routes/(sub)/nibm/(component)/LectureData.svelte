@@ -24,7 +24,7 @@
 			<h1 class="text-yellow-500">{data.lecturer}</h1>
 		{/if}
 	</div>
-<h1 class="text-muted text-xs">Floor {data.floor}</h1>
+  <h1 class="text-muted text-xs">@ Floor {data.floor}</h1>
 	<div class="flex flex-wrap gap-2">
 		<h1 class="text-muted-foreground">{data.time}</h1>
 		{#if data.on_going}

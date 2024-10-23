@@ -74,7 +74,7 @@
 				alt="GitHub Avatar"
 			/>
 			<div class="select-none">
-				<h1 class="text-3xl">Gavesh</h1>
+				<h1 class="text-4xl">Gavesh</h1>
 				<h1 class="text-2xl">Saparamadu</h1>
 			</div>
 		</div>
@@ -106,9 +106,3 @@
 		</h1>
 	</div>
 </div>
-
-<style>
-	.info:hover {
-		box-shadow: 0 0 250px #fff;
-	}
-</style>
