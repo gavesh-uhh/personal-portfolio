@@ -1,20 +1,8 @@
 <script lang="ts">
 	export let lectureInfo: Lecture;
-	type Lecture = {
-		class: string | null;
-		branch: string | null;
-		floor: string | null;
-		lecturer: string | null;
-		time: string | null;
-		on_going: boolean;
-		date: Date;
-	};
 </script>
 
 <div class="relative p-4 bg-background-secondary ring-1 ring-stone-800 rounded-lg">
-	{#if lectureInfo.on_going}
-		<div class="grad"></div>
-	{/if}
 	<h1 class="text-muted text-xs">{lectureInfo.branch}</h1>
 	<div class="flex flex-row justify-between items-center">
 		<h1 class="text-md sm:text-xl">{lectureInfo.class}</h1>
@@ -24,15 +12,9 @@
 			<h1 class="text-yellow-500">{lectureInfo.lecturer}</h1>
 		{/if}
 	</div>
-  <h1 class="text-muted text-xs">@ Floor {lectureInfo.floor}</h1>
+	<h1 class="text-muted text-xs">@ Floor {lectureInfo.floor}</h1>
 	<div class="flex flex-wrap gap-2">
 		<h1 class="text-muted-foreground">{lectureInfo.time}</h1>
-		{#if lectureInfo.on_going}
-			<span class="text-green-400">(On Going)</span>
-		{/if}
-	</div>
-	<div class="flex flex-wrap gap-2">
-		<h1 class="text-muted-foreground text-xs opacity-50">{lectureInfo.date.toDateString()}</h1>
 	</div>
 </div>
 

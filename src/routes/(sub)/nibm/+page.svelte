@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { Loader2, SearchIcon } from 'lucide-svelte';
-	import { page } from '$app/stores';
 	import LectureData from './(component)/LectureData.svelte';
 	import { onMount } from 'svelte';
-	export let data;
+
+	let lectures: Lecture[] = [];
+	let currentDate: Date;
+	let loaded = false;
 
 	$: selectedBranch = '';
 	$: offset = 0;
 	let inputBranch: string;
-	let currentDate = data.date;
 
 	const updateTable = async () => {
 		selectedBranch = inputBranch;
@@ -23,29 +24,18 @@
 		offset = num;
 	};
 
-	onMount(() => {
-		const unsubscribe = page.subscribe(($page) => {
-			const url = new URL($page.url);
-			let classParam = url.searchParams.get('batch') || '';
-			let offsetParam = url.searchParams.get('offset') || 0;
-			if (classParam != '') {
-				manualUpdate(classParam);
-			}
-			if (offsetParam != null) offset = parseInt(offsetParam.toString());
+	onMount(async () => {
+		currentDate = new Date();
+		console.log(currentDate);
+		const response = await fetch('/api/nibm?date=' + currentDate);
+		const json = await response.json();
+		const data = json.data;
+		data.forEach((element: Lecture) => {
+			lectures = [...lectures, element];
 		});
-		return () => {
-			unsubscribe();
-		};
+		loaded = true;
+		console.log(lectures);
 	});
-
-	function checkForOffset(date1: Date | null, date2: Date | null, offset: number): boolean {
-		if (date1 == null || date2 == null) return false;
-		return (
-			date1.getFullYear() === date2.getFullYear() &&
-			date1.getMonth() === date2.getMonth() &&
-			date1.getDate() === date2.getDate() + offset
-		);
-	}
 </script>
 
 <svelte:head>
@@ -64,7 +54,7 @@
 	<div class="flex flex-col sm:flex-row items-start gap-4 sm:items-center justify-between">
 		<div>
 			<h1 class="text-3xl font-semibold">NIBM Lectures Viewer</h1>
-			<p class="text-muted-foreground text-sm">Type the full batch name (Example - DSE21.3F)</p>
+			<p class="text-muted-foreground text-sm">⚠️ 'Live Classes' functionality has been removed</p>
 		</div>
 		<div class="flex flex-row gap-3 items-center">
 			<SearchIcon class="w-4 h-4" />
@@ -91,7 +81,7 @@
 							setOffset(i);
 						}}
 					>
-						{#if i == 0}
+						{#if i === 0}
 							Today
 						{:else}
 							+{i} Day
@@ -121,31 +111,24 @@
 	</div>
 
 	<div class="mt-2 flex flex-col flex-1 gap-2">
-		{#await data.today}
-			<h1 class="flex flex-row items-center">
-				Loading Lectures
-				<Loader2 class="ml-2 w-4 h-4 animate-spin" />
-			</h1>
-		{:then lectures}
-			{#if lectures.length > 0}
-				{#each lectures as item}
-					{#if checkForOffset(item.date, currentDate, offset)}
-						{#if selectedBranch === '' || item.branch?.startsWith(selectedBranch)}
-							<LectureData lectureInfo={item} />
-						{/if}
+		{#if loaded}
+			{#each lectures as item}
+				{#if item.offset == offset}
+					{#if selectedBranch == ''}
+						<LectureData lectureInfo={item} />
+					{:else if item.branch?.startsWith(selectedBranch)}
+						<LectureData lectureInfo={item} />
 					{/if}
-				{/each}
-			{:else}
-				<div class="flex-1 flex items-center justify-center">
-					<h1>No Lectures Today!</h1>
-				</div>
-			{/if}
-		{/await}
-	</div>
-	<div class="mt-2">
-		<p class="text-muted-foreground text-xs">
-			Fetched Time : {data.date.toLocaleDateString() + ' - ' + data.date.toLocaleTimeString()} <br>
-		</p>
+				{/if}
+			{/each}
+		{:else}
+			<div class="flex-1 flex items-start p-4 justify-center">
+				<h1 class="flex flex-row gap-4 items-center">
+					<Loader2 class="w-4 h-4 animate-spin" />
+					Loading Lectures...
+				</h1>
+			</div>
+		{/if}
 	</div>
 </div>
 
