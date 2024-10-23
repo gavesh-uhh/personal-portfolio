@@ -74,29 +74,12 @@ function isOngoing(currentDate: Date, time_str: string) {
   return currentDate >= start_time && currentDate <= end_time;
 }
 async function getRealDate() {
-  try {
-    const response = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log("API Response:", data);
-    const year = data.year;
-    const month = data.month - 1;
-    const day = data.day;
-    const hour = data.hour;
-    const minute = data.minute;
-    const seconds = data.seconds;
-    const adjustedDate = new Date(Date.UTC(year, month, day, hour, minute, seconds));
-    console.log("[SERVER] " + adjustedDate.toString());
-    return adjustedDate;
-
-  } catch (error) {
-    console.error("Error fetching the date:", error);
-    return new Date();
-  }
+  const utcDate = new Date();
+  const offset = 5.5 * 60 * 60 * 1000; // offset in milliseconds
+  const sriLankaDate = new Date(utcDate.getTime() + offset);
+  return sriLankaDate;
 }
+
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
   if (!date1 || !date2) return false;
   return date1.getFullYear() === date2.getFullYear() &&
