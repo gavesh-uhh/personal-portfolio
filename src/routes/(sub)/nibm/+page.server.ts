@@ -13,6 +13,7 @@ export async function load() {
 async function scrapeWebsite(url: string) {
   const lectures: Lecture[] = [];
   const currentDate = await getRealTime();
+  console.log(currentDate);
   for (let i = 0; i < 3; i++) {
     const lectureDate = getDateWithOffset(currentDate, i);
 
@@ -83,11 +84,12 @@ function isOngoing(currentDate: Date, time_str: string) {
 }
 
 async function getRealTime() {
-  const data = await fetch(
-    "https://timeapi.io/api/time/current/zone?timeZone=Asia%2FColombo",
-  );
-  const resp = await data.json();
-  return new Date(resp.dateTime);
+  // const data = await fetch(
+  //  "https://timeapi.io/api/time/current/zone?timeZone=Asia%2FColombo",
+  //);
+  //const resp = await data.json();
+  let c = new Date();
+  return c;
 }
 
 function isSameDay(date1: Date | null, date2: Date | null): boolean {

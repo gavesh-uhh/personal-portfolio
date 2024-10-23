@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Loader2 } from 'lucide-svelte';
+	import { Loader2, SearchIcon } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import LectureData from './(component)/LectureData.svelte';
 	import { onMount } from 'svelte';
@@ -9,11 +9,12 @@
 	$: offset = 0;
 	let inputBranch: string;
 	let currentDate = data.date;
+
 	const updateTable = async () => {
 		selectedBranch = inputBranch;
 	};
 
-	const manual = (batch: string) => {
+	const manualUpdate = (batch: string) => {
 		inputBranch = batch;
 		selectedBranch = batch;
 	};
@@ -28,7 +29,7 @@
 			let classParam = url.searchParams.get('batch') || '';
 			let offsetParam = url.searchParams.get('offset') || 0;
 			if (classParam != '') {
-				manual(classParam);
+				manualUpdate(classParam);
 			}
 			if (offsetParam != null) offset = parseInt(offsetParam.toString());
 		});
@@ -65,13 +66,16 @@
 			<h1 class="text-3xl font-semibold">NIBM Lectures Viewer</h1>
 			<p class="text-muted-foreground text-sm">Type the full batch name (Example - DSE21.3F)</p>
 		</div>
-		<input
-			bind:value={inputBranch}
-			on:input={updateTable}
-			placeholder="Type Your Batch Here.."
-			class="search-bar"
-			type="text"
-		/>
+		<div class="flex flex-row gap-3 items-center">
+			<SearchIcon class="w-4 h-4" />
+			<input
+				bind:value={inputBranch}
+				on:input={updateTable}
+				placeholder="Type Your Batch Here.."
+				class="search-bar"
+				type="text"
+			/>
+		</div>
 	</div>
 
 	<hr class="mt-3 mb-1 opacity-10" />
@@ -90,7 +94,7 @@
 						{#if i == 0}
 							Today
 						{:else}
-							+{i} Days
+							+{i} Day
 						{/if}
 					</button>
 				{/each}
@@ -103,13 +107,13 @@
 				<button
 					class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
 					on:click={() => {
-						manual('DSE24.2F');
+						manualUpdate('DSE24.2F');
 					}}>DSE24.2F</button
 				>
 				<button
 					class="quick-batch opacity-45 hover:opacity-100 transition duration-300"
 					on:click={() => {
-						manual('REPEATERS');
+						manualUpdate('REPEATERS');
 					}}>Repeating Exams</button
 				>
 			</div>
