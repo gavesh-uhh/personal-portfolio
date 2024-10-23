@@ -13,10 +13,8 @@ export async function load() {
 async function scrapeWebsite(url: string) {
   const lectures: Lecture[] = [];
   const currentDate = await getRealTime();
-  console.log(currentDate);
   for (let i = 0; i < 3; i++) {
     const lectureDate = getDateWithOffset(currentDate, i);
-
     try {
       const { data } = await axios.get(url + `&date=${lectureDate}`);
       const $ = cheerio.load(data);
@@ -35,7 +33,6 @@ async function scrapeWebsite(url: string) {
         $(row).find("td").each((tdIndex, td) => {
           const text = $(td).text().trim();
           if (tdIndex === 0) {
-            console.log(text.replaceAll("/CO", ""));
             lecture.branch = text.replaceAll("/CO", "");
           }
           if (tdIndex === 1) {
@@ -66,7 +63,7 @@ async function scrapeWebsite(url: string) {
         lectures.push(lecture);
       });
     } catch (error) {
-      console.error("Oopsie daisy", error);
+      console.error("Error : ", error);
     }
   }
   return lectures;
@@ -77,19 +74,24 @@ function isOngoing(currentDate: Date, time_str: string) {
   const time_data = time_str.split("-");
   const start_time = convertTimeToDate(time_data[0]);
   const end_time = convertTimeToDate(time_data[1]);
-  const date = currentDate;
-  const current_time = date.getTime();
-  return current_time >= start_time.getTime() &&
+  const current_time = currentDate.getTime();
+  let x = current_time >= start_time.getTime() &&
     current_time <= end_time.getTime();
+  console.log(x);
+  return x;
 }
 
 async function getRealTime() {
-  // const data = await fetch(
-  //  "https://timeapi.io/api/time/current/zone?timeZone=Asia%2FColombo",
-  //);
-  //const resp = await data.json();
-  let c = new Date();
-  return c;
+  try {
+    const data = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo");
+    const resp = await data.json();
+    if (resp && resp.dateTime) {
+      return new Date(resp.dateTime);
+    }
+  } catch (error) {
+    console.error("Error fetching real-time", error);
+  }
+  return new Date();
 }
 
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
@@ -108,6 +110,7 @@ function convertStringToDate(time: string) {
   const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
   return date;
 }
+
 function convertTimeToDate(time: string) {
   const time_str = time.trim().replaceAll("pm", "").replaceAll("am", "").trim();
   const time_data = time_str.split(":");
@@ -117,10 +120,9 @@ function convertTimeToDate(time: string) {
 }
 
 function getDateWithOffset(realDate: Date, offset: number) {
-  const year = realDate.getFullYear();
-  const month = realDate.getMonth();
-  const date = realDate.getDate();
-  return `${year}-${month + 1}-${date + offset}`;
+  const offsetDate = new Date(realDate);
+  offsetDate.setDate(realDate.getUTCDate() + offset);
+  return offsetDate.toISOString().slice(0, 10);
 }
 
 type Lecture = {

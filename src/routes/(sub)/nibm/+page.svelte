@@ -142,9 +142,9 @@
 			{/if}
 		{/await}
 	</div>
-	<div>
+	<div class="mt-2">
 		<p class="text-muted-foreground text-xs">
-			Server Time : {data.date.toLocaleDateString() + ' - ' + data.date.toLocaleTimeString()}
+			Fetched Time : {data.date.toLocaleDateString() + ' - ' + data.date.toLocaleTimeString()} <br>
 		</p>
 	</div>
 </div>
