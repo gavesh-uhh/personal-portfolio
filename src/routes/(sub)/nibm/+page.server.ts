@@ -100,19 +100,12 @@ async function getRealTime() {
         milliSeconds,
       } = data;
 
-      const colomboTime = new Date(
-        year,
-        month - 1,
-        day,
-        hour,
-        minute,
-        seconds,
-        milliSeconds
-      );
+      const colomboTime = new Date(year, month - 1, day, hour, minute, seconds, milliSeconds);
+      const timezoneOffset = 5.5 * 60;
+      const localOffset = colomboTime.getTimezoneOffset();
+      const adjustedDate = new Date(colomboTime.getTime() + (timezoneOffset + localOffset) * 60 * 1000);
 
-      console.log(colomboTime);
-
-      return colomboTime;
+      return adjustedDate;
     }
   } catch (error) {
     console.error("Error fetching real-time:", error);
