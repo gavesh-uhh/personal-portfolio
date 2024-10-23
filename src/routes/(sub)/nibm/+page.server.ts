@@ -81,19 +81,37 @@ function isOngoing(currentDate: Date, time_str: string) {
   return x;
 }
 
-// Mumbai to Colombo
+// im loosing hope why dont this work
 async function getRealTime() {
   try {
-    const data = await fetch(
+    const response = await fetch(
       "https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo"
     );
-    const resp = await data.json();
-    if (resp && resp.dateTime) {
-      const colomboTime = new Date(resp.dateTime);
-      const serverOffsetMinutes = colomboTime.getTimezoneOffset();
-      const colomboOffsetMinutes = colomboTime.getTimezoneOffset();
-      const offsetDifference = colomboOffsetMinutes - serverOffsetMinutes;
-      colomboTime.setMinutes(colomboTime.getMinutes() + offsetDifference);
+    const data = await response.json();
+
+    if (data) {
+      const {
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        seconds,
+        milliSeconds,
+      } = data;
+
+      const colomboTime = new Date(
+        year,
+        month - 1,
+        day,
+        hour,
+        minute,
+        seconds,
+        milliSeconds
+      );
+
+      console.log(colomboTime);
+
       return colomboTime;
     }
   } catch (error) {
