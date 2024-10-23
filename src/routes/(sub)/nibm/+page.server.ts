@@ -82,15 +82,6 @@ function isOngoing(currentDate: Date, time_str: string) {
 }
 
 async function getRealTime() {
-  try {
-    const data = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo");
-    const resp = await data.json();
-    if (resp && resp.dateTime) {
-      return new Date(resp.dateTime);
-    }
-  } catch (error) {
-    console.error("Error fetching real-time", error);
-  }
   return new Date();
 }
 
