@@ -100,11 +100,18 @@ async function getRealTime() {
         milliSeconds,
       } = data;
 
-      const colomboTime = new Date(year, month - 1, day, hour, minute, seconds, milliSeconds);
-      const timezoneOffset = 5.5 * 60;
-      const localOffset = colomboTime.getTimezoneOffset();
-      const adjustedDate = new Date(colomboTime.getTime() + (timezoneOffset + localOffset) * 60 * 1000);
+      const colomboTime = new Date(Date.UTC(
+        year,
+        month - 1,
+        day,
+        hour,
+        minute,
+        seconds,
+        milliSeconds
+      ));
 
+      const timezoneOffset = 5.5 * 60 * 60 * 1000; // in milliseconds
+      const adjustedDate = new Date(colomboTime.getTime() - timezoneOffset);
       return adjustedDate;
     }
   } catch (error) {
@@ -112,7 +119,6 @@ async function getRealTime() {
   }
   return new Date();
 }
-
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
   if (date1 == null || date2 == null) return false;
   return date1.getFullYear() === date2.getFullYear() &&
