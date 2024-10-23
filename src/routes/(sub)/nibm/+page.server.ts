@@ -81,30 +81,22 @@ async function getRealDate() {
     }
 
     const data = await response.json();
-    let adjustedDate = new Date();
-
+    console.log("API Response:", data);
     const year = data.year;
-    const month = data.month;
+    const month = data.month - 1;
     const day = data.day;
     const hour = data.hour;
     const minute = data.minute;
     const seconds = data.seconds;
-
-    adjustedDate.setFullYear(year, month - 1, day);
-    adjustedDate.setHours(hour);
-    adjustedDate.setMinutes(minute);
-    adjustedDate.setSeconds(seconds);
-
+    const adjustedDate = new Date(Date.UTC(year, month, day, hour, minute, seconds));
     console.log("[SERVER] " + adjustedDate.toString());
-
     return adjustedDate;
 
   } catch (error) {
     console.error("Error fetching the date:", error);
-    return new Date(); // Fallback to the current date
+    return new Date();
   }
 }
-
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
   if (!date1 || !date2) return false;
   return date1.getFullYear() === date2.getFullYear() &&
