@@ -79,19 +79,32 @@ async function getRealDate() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+
     const data = await response.json();
-    console.log("API Response:", data);
-    const localDate = new Date(data.dateTime); // Treat as local time directly
-    if (isNaN(localDate.getTime())) {
-      throw new Error("Invalid local date created from API response");
-    }
-    console.log("Local Date:", localDate.toString());
-    return localDate; // Return the valid local date
+    let adjustedDate = new Date();
+
+    const year = data.year;
+    const month = data.month;
+    const day = data.day;
+    const hour = data.hour;
+    const minute = data.minute;
+    const seconds = data.seconds;
+
+    adjustedDate.setFullYear(year, month - 1, day);
+    adjustedDate.setHours(hour);
+    adjustedDate.setMinutes(minute);
+    adjustedDate.setSeconds(seconds);
+
+    console.log("[SERVER] " + adjustedDate.toString());
+
+    return adjustedDate;
+
   } catch (error) {
     console.error("Error fetching the date:", error);
     return new Date(); // Fallback to the current date
   }
 }
+
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
   if (!date1 || !date2) return false;
   return date1.getFullYear() === date2.getFullYear() &&
