@@ -131,7 +131,7 @@
 				{#each lectures as item}
 					{#if checkForOffset(item.date, currentDate, offset)}
 						{#if selectedBranch === '' || item.branch?.startsWith(selectedBranch)}
-							<LectureData data={item} />
+							<LectureData lectureInfo={item} />
 						{/if}
 					{/if}
 				{/each}
@@ -141,6 +141,11 @@
 				</div>
 			{/if}
 		{/await}
+	</div>
+	<div>
+		<p class="text-muted-foreground text-xs">
+			Server Time : {data.date.toLocaleDateString() + ' - ' + data.date.toLocaleTimeString()}
+		</p>
 	</div>
 </div>
 
