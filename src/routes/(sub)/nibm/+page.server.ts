@@ -81,7 +81,24 @@ function isOngoing(currentDate: Date, time_str: string) {
   return x;
 }
 
+// Mumbai to Colombo
 async function getRealTime() {
+  try {
+    const data = await fetch(
+      "https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo"
+    );
+    const resp = await data.json();
+    if (resp && resp.dateTime) {
+      const colomboTime = new Date(resp.dateTime);
+      const serverOffsetMinutes = colomboTime.getTimezoneOffset();
+      const colomboOffsetMinutes = colomboTime.getTimezoneOffset();
+      const offsetDifference = colomboOffsetMinutes - serverOffsetMinutes;
+      colomboTime.setMinutes(colomboTime.getMinutes() + offsetDifference);
+      return colomboTime;
+    }
+  } catch (error) {
+    console.error("Error fetching real-time:", error);
+  }
   return new Date();
 }
 
