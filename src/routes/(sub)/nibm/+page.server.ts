@@ -2,17 +2,19 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 
 export async function load() {
+  const realDate = await getRealDate();
   return {
-    date: await getRealTime(),
+    date: realDate,
     today: scrapeWebsite(
+      realDate,
       "https://lms.nibmworldwide.com/mod/nibm/display.php?wing=CO&div=1",
     ),
   };
 }
 
-async function scrapeWebsite(url: string) {
+async function scrapeWebsite(date: Date, url: string) {
   const lectures: Lecture[] = [];
-  const currentDate = await getRealTime();
+  const currentDate = date;
   for (let i = 0; i < 3; i++) {
     const lectureDate = getDateWithOffset(currentDate, i);
     try {
@@ -37,8 +39,7 @@ async function scrapeWebsite(url: string) {
           }
           if (tdIndex === 1) {
             $(td).find("big").each((i, big) => {
-              lecture.floor = $(td).contents().last().text() + " " +
-                $(big).text();
+              lecture.floor = $(td).contents().last().text() + " " + $(big).text();
             });
           }
           if (tdIndex === 2) {
@@ -54,12 +55,8 @@ async function scrapeWebsite(url: string) {
           }
         });
 
-        if (isSameDay(currentDate, lecture.date)) {
-          lecture.on_going = isOngoing(currentDate, lecture.time ?? "");
-        } else {
-          lecture.on_going = false;
-        }
-
+        // Determine if the lecture is ongoing
+        lecture.on_going = isSameDay(currentDate, lecture.date) && isOngoing(currentDate, lecture.time ?? "");
         lectures.push(lecture);
       });
     } catch (error) {
@@ -70,57 +67,34 @@ async function scrapeWebsite(url: string) {
 }
 
 function isOngoing(currentDate: Date, time_str: string) {
-  if (time_str == "") return false;
+  if (!time_str) return false;
   const time_data = time_str.split("-");
   const start_time = convertTimeToDate(time_data[0]);
   const end_time = convertTimeToDate(time_data[1]);
-  const current_time = currentDate.getTime();
-  let x = current_time >= start_time.getTime() &&
-    current_time <= end_time.getTime();
-  console.log(x);
-  return x;
+  return currentDate >= start_time && currentDate <= end_time;
 }
 
-// im loosing hope why dont this work
-async function getRealTime() {
+async function getRealDate() {
   try {
-    const response = await fetch(
-      "https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo"
-    );
-    const data = await response.json();
-
-    if (data) {
-      const {
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        seconds,
-        milliSeconds,
-      } = data;
-
-      const colomboTime = new Date(Date.UTC(
-        year,
-        month - 1,
-        day,
-        hour,
-        minute,
-        seconds,
-        milliSeconds
-      ));
-
-      const timezoneOffset = 5.5 * 60 * 60 * 1000; // in milliseconds
-      const adjustedDate = new Date(colomboTime.getTime() - timezoneOffset);
-      return adjustedDate;
+    const response = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Asia/Colombo");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const data = await response.json();
+    const utcDate = new Date(data.dateTime);
+    const localOffset = new Date().getTimezoneOffset();
+    const colomboOffset = -330;
+    const offsetDifference = localOffset - colomboOffset;
+    utcDate.setMinutes(utcDate.getMinutes() + offsetDifference);
+    console.log(utcDate);
+    return utcDate;
   } catch (error) {
-    console.error("Error fetching real-time:", error);
+    console.error("Error fetching the date:", error);
+    return new Date();
   }
-  return new Date();
 }
 function isSameDay(date1: Date | null, date2: Date | null): boolean {
-  if (date1 == null || date2 == null) return false;
+  if (!date1 || !date2) return false;
   return date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate();
@@ -132,12 +106,11 @@ function convertStringToDate(time: string) {
   const timeData = cleanedStr.split("-");
   if (timeData.length !== 3) return null;
   const [year, month, day] = timeData;
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  return date;
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
 function convertTimeToDate(time: string) {
-  const time_str = time.trim().replaceAll("pm", "").replaceAll("am", "").trim();
+  const time_str = time.trim().replace(/pm/i, "").replace(/am/i, "").trim();
   const time_data = time_str.split(":");
   const curr_date = new Date();
   curr_date.setHours(parseInt(time_data[0]), parseInt(time_data[1]), 0, 0);
@@ -146,8 +119,10 @@ function convertTimeToDate(time: string) {
 
 function getDateWithOffset(realDate: Date, offset: number) {
   const offsetDate = new Date(realDate);
-  offsetDate.setDate(realDate.getUTCDate() + offset);
-  return offsetDate.toISOString().slice(0, 10);
+  offsetDate.setDate(realDate.getDate() + offset);
+  const offsetCleaned = `${offsetDate.getFullYear()}-${offsetDate.getMonth() + 1}-${offsetDate.getDate()}`
+  return offsetCleaned;
+
 }
 
 type Lecture = {
@@ -159,3 +134,4 @@ type Lecture = {
   on_going: boolean;
   date: Date | null;
 };
+
